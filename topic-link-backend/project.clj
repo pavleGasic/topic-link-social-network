@@ -10,7 +10,10 @@
                  [metosin/reitit "0.7.0"]
                  [metosin/reitit-http "0.7.0"]
                  [metosin/muuntaja "0.6.10"]
-                 [ring-cors/ring-cors "0.1.13"]]
+                 [ring-cors/ring-cors "0.1.13"]
+                 [buddy/buddy-core "1.11.423"]
+                 [buddy/buddy-auth "3.0.323"]
+                 [buddy/buddy-sign "3.5.351"]]
   :main ^:skip-aot topic-link-backend.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all
