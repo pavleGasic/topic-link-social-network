@@ -13,7 +13,9 @@
                  [ring-cors/ring-cors "0.1.13"]
                  [buddy/buddy-core "1.11.423"]
                  [buddy/buddy-auth "3.0.323"]
-                 [buddy/buddy-sign "3.5.351"]]
+                 [buddy/buddy-sign "3.5.351"]
+                 [com.novemberain/monger "3.6.0"]
+                 [buddy/buddy-hashers "2.0.167"]]
   :main ^:skip-aot topic-link-backend.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all

@@ -1,5 +1,6 @@
-(ns topic-link-backend.auth.utils
+(ns topic-link-backend.utils.auth
   (:require [buddy.sign.jwt :as jwt]
+            [buddy.hashers :as hashers]
             [clojure.edn :as edn]
             [buddy.auth.backends :as backends]
             [buddy.auth :refer [authenticated?]]
@@ -20,4 +21,11 @@
   (fn [request]
     (if (authenticated? request)
       (handler request)
-      {:status 401 :body {:error "Unauthorized"}})))
+      {:status 401 :body {:error "Unauthorized" :statusCode 401}})))
+
+(defn verify-password? [plain-password hashed-password]
+  (hashers/check plain-password hashed-password))
+
+
+(defn hash-password [password]
+  (hashers/derive password))
