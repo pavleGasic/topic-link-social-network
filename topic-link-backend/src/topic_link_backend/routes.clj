@@ -11,7 +11,8 @@
             [muuntaja.core :as muuntaja]
             [topic-link-backend.utils.auth :refer [wrap-jwt-auth auth-middleware]]
             [topic-link-backend.handlers.new-handler :as handler]
-            [topic-link-backend.handlers.user-handler :as user-handler]))
+            [topic-link-backend.handlers.user-handler :as user-handler]
+            [topic-link-backend.handlers.category-handler :as category-handler]))
 
 
 (defn app []
@@ -23,20 +24,23 @@
                                   :swagger    {:security [{:token []}]}
                                   :handler    handler/hello-protected
                                   :responses  {200 {:body {:message s/Str}}}}}]
-       ["/hello-not-protected" {:get {:summary "Ping server not auth"
-                                      :swagger {:security [{:token []}]}
-                                      :handler handler/hello-not-protected
+       ["/hello-not-protected" {:get {:summary   "Ping server not auth"
+                                      :swagger   {:security [{:token []}]}
+                                      :handler   handler/hello-not-protected
                                       :responses {200 {:body {:message s/Str}}}}}]
-       ["/login" {:post {:summary    "User login to server"
-                         :parameters {:body {:email s/Str
-                                             :password s/Str}}
-                         :handler    user-handler/login}}]
-       ["/register" {:post {:summary    "User registration to server"
-                         :parameters {:body {:email s/Str
-                                             :password s/Str
-                                             :firstName s/Str
-                                             :lastName s/Str}}
-                         :handler    user-handler/register}}]
+       ["/user/login" {:post {:summary    "User login to server"
+                              :parameters {:body {:email    s/Str
+                                                  :password s/Str}}
+                              :handler    user-handler/login}}]
+       ["/user/register" {:post {:summary    "User registration to server"
+                                 :parameters {:body {:email     s/Str
+                                                     :password  s/Str
+                                                     :firstName s/Str
+                                                     :lastName  s/Str
+                                                     :categories [s/Str]}}
+                                 :handler    user-handler/register}}]
+       ["/category/get-all" {:get {:summary "Get all categories"
+                                   :handler category-handler/get-all}}]
        ["/swagger.json" {:get {:no-doc  true
                                :handler (swagger/create-swagger-handler)}}]
        ["/api-docs/*" {:get {:no-doc true :handler (swagger-ui/create-swagger-ui-handler)}}]]
