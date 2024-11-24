@@ -7,7 +7,7 @@
   [{:keys [parameters]}]
   (let [data (:body parameters)
         result (user-service/login data)]
-    (logger/info (str "User with email " (:email data) " requested login"))
+    (logger/info (str "User with email " (:emailOrUsername data) " requested login"))
     (if (:error result)
       (response/unauthorized {:error (:error result)})
       (response/ok result))))
@@ -22,7 +22,7 @@
       (response/ok result))))
 
 
-;;get post feed for specific user
+;;get posts feed for specific user
 ;;search for topics (and maybe topic type)
 ;;subscribe for some topic
 ;;post user preferences (for displaying feed)

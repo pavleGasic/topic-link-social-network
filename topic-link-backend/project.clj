@@ -15,7 +15,8 @@
                  [buddy/buddy-auth "3.0.323"]
                  [buddy/buddy-sign "3.5.351"]
                  [com.novemberain/monger "3.6.0"]
-                 [buddy/buddy-hashers "2.0.167"]]
+                 [buddy/buddy-hashers "2.0.167"]
+                 [clojure.java-time/clojure.java-time "1.4.2"]]
   :main ^:skip-aot topic-link-backend.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all

@@ -12,7 +12,8 @@
             [topic-link-backend.utils.auth :refer [wrap-jwt-auth auth-middleware]]
             [topic-link-backend.handlers.new-handler :as handler]
             [topic-link-backend.handlers.user-handler :as user-handler]
-            [topic-link-backend.handlers.category-handler :as category-handler]))
+            [topic-link-backend.handlers.category-handler :as category-handler]
+            [topic-link-backend.handlers.community-handler :as community-handler]))
 
 
 (defn app []
@@ -29,16 +30,25 @@
                                       :handler   handler/hello-not-protected
                                       :responses {200 {:body {:message s/Str}}}}}]
        ["/user/login" {:post {:summary    "User login to server"
-                              :parameters {:body {:email    s/Str
-                                                  :password s/Str}}
+                              :parameters {:body {:emailOrUsername s/Str
+                                                  :password        s/Str}}
                               :handler    user-handler/login}}]
        ["/user/register" {:post {:summary    "User registration to server"
-                                 :parameters {:body {:email     s/Str
-                                                     :password  s/Str
-                                                     :firstName s/Str
-                                                     :lastName  s/Str
+                                 :parameters {:body {:email      s/Str
+                                                     :password   s/Str
+                                                     :firstName  s/Str
+                                                     :lastName   s/Str
+                                                     :username   s/Str
                                                      :categories [s/Str]}}
                                  :handler    user-handler/register}}]
+       ["/community/create" {:post {:summary    "Create community by user"
+                                    :middleware [wrap-jwt-auth auth-middleware]
+                                    :swagger    {:security [{:token []}]}
+                                    :parameters {:body {:name        s/Str
+                                                        :description s/Str
+                                                        :rules       [s/Str]
+                                                        }}
+                                    :handler    community-handler/create-community}}]
        ["/category/get-all" {:get {:summary "Get all categories"
                                    :handler category-handler/get-all}}]
        ["/swagger.json" {:get {:no-doc  true

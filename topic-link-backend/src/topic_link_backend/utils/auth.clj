@@ -16,6 +16,9 @@
 (defn create-token [payload]
   (jwt/sign payload jwt-secret))
 
+(defn unsign-token [token]
+  (jwt/unsign token jwt-secret))
+
 (defn auth-middleware
   [handler]
   (fn [request]
@@ -29,3 +32,10 @@
 
 (defn hash-password [password]
   (hashers/derive password))
+
+(defn get-token-value [token-full]
+  (let [pattern #"^Token\s+([A-Za-z0-9-_.]+)$"
+        matches (re-matches pattern token-full)]
+    (if matches
+      (second matches)
+      nil)))

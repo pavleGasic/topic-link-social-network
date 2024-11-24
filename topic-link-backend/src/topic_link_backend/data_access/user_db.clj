@@ -6,11 +6,17 @@
 (defn insert-user [user]
   (monger/insert (get-db) "users" user))
 
-(defn user-exists? [email]
-  (boolean (monger/find-one-as-map (get-db) "users" {:email email})))
+(defn user-exists? [email-or-username]
+  (boolean (monger/find-one-as-map
+             (get-db)
+             "users"
+             {"$or" [{:email email-or-username}
+                     {:username email-or-username}]})))
 
-(defn find-user-by-email [email]
-  (let [user (monger/find-one-as-map (get-db) "users" {:email email})]
-    (if user
-      (dissoc user :_id)
-      nil)))
+(defn find-user-by-email-or-username [email-or-username]
+  (update (monger/find-one-as-map
+                              (get-db)
+                              "users"
+                              {"$or" [{:email email-or-username}
+                                      {:username email-or-username}]}
+                              ) :_id str))
